@@ -305,6 +305,34 @@ PlantEater.prototype.act = function(view) {
     return {type: "move", direction: space};
 };
 
+function SmarterPlantEater() {
+  this.energy = 20;
+  console.log(directionNames);
+  this.lastMove = null; 
+};
+
+SmarterPlantEater.prototype.act = function(view) {
+  var plants = view.findAll("*");
+  var space = view.find(" ");
+  if (this.energy > 60 && space) {
+    return {type: "reproduce", direction: space};
+  }
+  if (plants.length > 0 && this.energy < 20) {
+    return {type: "eat", direction: plants[0]};
+  }
+  if (this.lastMove !== null) {
+    if (!(view.findAll(" ").includes(this.lastMove))) {
+      this.lastMove = view.find(" ");
+    }
+    return {type: "move", direction: this.lastMove};
+  } else {
+    // initial move
+    if (space) {
+      this.lastMove = space;
+      return {type: "move", direction: space};
+    }
+  }
+}
 
 var valley = new LifelikeWorld(
   ["############################",
@@ -323,3 +351,9 @@ var valley = new LifelikeWorld(
    "O": PlantEater,
    "*": Plant}
 );
+
+const turns = 30;
+for (var i = 0; i < 30; i++) {
+  valley.turn();
+  console.log(valley.toString());
+}
