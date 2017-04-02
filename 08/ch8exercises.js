@@ -32,3 +32,34 @@ for (var i = 1; i < 10; i++) {
     console.log(retryMultiply(i, j));
   }
 }
+
+var box = {
+  locked: true,
+  unlock: function() { this.locked = false; },
+  lock: function() { this.locked = true; },
+  _content: [],
+  get content() {
+    if (this.locked) throw new Error("Locked!");
+    return this._content;
+  },
+  isLocked: function() { return this.locked; }
+};
+
+function withBoxUnlocked(f) {
+  try {
+    box.unlock();
+    f();
+  } finally {
+    box.lock();
+  }
+}
+
+box.unlock();
+console.log(box.isLocked());
+try {
+  withBoxUnlocked(() => { throw new Error(); });
+} catch (e) {
+  console.log(e.message);
+}
+
+console.log(box.isLocked());
