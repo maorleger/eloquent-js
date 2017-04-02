@@ -334,22 +334,38 @@ SmarterPlantEater.prototype.act = function(view) {
   }
 }
 
+function Wolf() {
+  this.energy = 30;
+};
+
+Wolf.prototype.act = function(view) {
+  var plantEater = view.find("O");
+  if (this.energy < 20 && plantEater) {
+    return {type: "eat", direction: plantEater}
+  }
+  var space = view.find(" ");
+  if (space) {
+    return {type: "move", direction: space};
+  }
+}
+
 var valley = new LifelikeWorld(
   ["############################",
    "#####                 ######",
    "##   ***                **##",
    "#   *##**         **  O  *##",
    "#    ***     O    ##**    *#",
-   "#       O         ##***    #",
+   "#      WO         ##***    #",
    "#                 ##**     #",
    "#   O       #*             #",
-   "#*          #**       O    #",
+   "#*     W    #**       O    #",
    "#***        ##**    O    **#",
    "##****     ###***       *###",
    "############################"],
   {"#": Wall,
    "O": PlantEater,
-   "*": Plant}
+   "*": Plant,
+   "W": Wolf}
 );
 
 const turns = 30;
