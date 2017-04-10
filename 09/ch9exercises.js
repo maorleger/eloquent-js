@@ -28,5 +28,5 @@ console.log(regex6.test("fkljdsfljds"));
 
 var regex7 = new RegExp(/\b[^e]+\b/);
 
-console.log("my test string 'here' is one quote and here is an apostro'phe and 'there is some more multi word quote' and that's it".replace(/\s'/g, ' "').replace(/'\s/g, '" '));
+console.log("my test string 'here' is one quote and here is an apostro'phe and 'there is some more multi word quote' and that's it".replace(/(\s)'|'(\s)/g, '$1"$2'));
 
